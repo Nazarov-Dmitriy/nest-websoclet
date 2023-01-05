@@ -4,36 +4,14 @@ export type BookCommentsDocument = BookComments & Document;
 
 @Schema()
 export class BookComments {
-  @Prop({ required: true })
-  public id: string;
+  @Prop()
+  public id: number;
 
-  @Prop({ required: true })
-  public bookId: string;
+  @Prop()
+  public bookId: number;
 
-  @Prop({ required: true })
+  @Prop()
   public comment: string;
 }
 
 export const BookCommentsSchema = SchemaFactory.createForClass(BookComments);
-
-// import mongoose, { Document, Schema } from 'mongoose';
-// import BookComments from '../interface/BookComments';
-
-// const schema = new Schema({
-//   id: {
-//     type: Number,
-//     required: true,
-//   },
-//   bookId: {
-//     type: Number,
-//     required: true,
-//   },
-//   comment: {
-//     type: String,
-//     required: true,
-//   },
-// });
-// export const BookCommentsModels = mongoose.model<BookComments & Document>(
-//   'Book',
-//   schema,
-// );

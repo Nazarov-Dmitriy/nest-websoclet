@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { BookComments, BookCommentsSchema } from './BookCommentModel';
-import { BookCommentsService } from './bookCommentsService';
+import { bookCommentsService } from './bookCommentsService';
 import { MongooseModule } from '@nestjs/mongoose';
+import { BookComments, BookCommentsSchema } from './BookCommentModel';
 
 @Module({
   imports: [
@@ -9,7 +9,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       { name: BookComments.name, schema: BookCommentsSchema },
     ]),
   ],
-  providers: [BookCommentsService],
-  exports: [BookCommentsService],
+  providers: [bookCommentsService],
+  exports: [bookCommentsService],
 })
 export class BookModule {}

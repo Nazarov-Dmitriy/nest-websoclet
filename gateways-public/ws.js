@@ -1,11 +1,11 @@
 (() => {
   const socket = io.connect('http://localhost:3000');
 
-  socket.emit('getAllComments', (answer) => {
-    console.log(answer + 1);
+  socket.emit('getAllComments', { bookId: 1 }, (answer) => {
+    console.log(answer);
   });
 
-  // socket.emit('message', { data: 'Hello' }, (answer) => {
-  //   console.log(answer);
-  // });
+  socket.emit('addComment', { data: 'ggggggggggggggggg' }, (answer) => {
+    console.log(answer);
+  });
 })();

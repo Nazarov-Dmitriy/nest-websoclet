@@ -1,49 +1,46 @@
 import { Injectable } from '@nestjs/common';
+import { Model, Connection } from 'mongoose';
+import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import BookCommentsDto from 'src/interface/BookCommentsDto';
-import { BookComments, BookCommentsDocument } from './BookCommentModel';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { BookCommentsDocument, BookComments } from './BookCommentModel';
 
 @Injectable()
-export class BookCommentsService {
+export class bookCommentsService {
   constructor(
     @InjectModel(BookComments.name)
-    private BookCommentsModel: Model<BookCommentsDocument>,
+    private BookComments: Model<BookCommentsDocument>,
+    @InjectConnection() private connection: Connection,
   ) {}
 
-  public async create(data: BookCommentsDto): Promise<BookComments> {
-    const bookComments = new this.BookCommentsModel(data);
+  public async findAll(): Promise<BookCommentsDocument[]> {
+    const books = await this.BookComments.find().select('-__v');
+    return books;
+  }
 
-    await bookComments.save();
-    return bookComments;
+  public async create(data: BookCommentsDto): Promise<BookCommentsDocument> {
+    const book = new this.BookComments(data);
+
+    return await book.save();
+  }
+
+  public async findAllBookComment(
+    id: number,
+  ): Promise<BookCommentsDocument | null> {
+    const books = await this.BookComments.findById(id).select('-__v');
+    return books;
   }
 
   async update(
     id: string,
     data: BookCommentsDto,
-  ): Promise<BookComments | undefined> {
-    const bookComments = await this.BookCommentsModel.findByIdAndUpdate(
-      id,
-      data,
-    ).select('-__v');
-    return bookComments;
-  }
-
-  async delete(id: string) {
-    await this.BookCommentsModel.deleteOne({ _id: id });
-  }
-
-  async findAll(): Promise<BookComments[]> {
-    console.log(1);
-
-    const bookComments = await this.BookCommentsModel.find().select('-__v');
-    console.log(bookComments);
-    console.log('sssssss');
-    return bookComments;
-  }
-
-  async findAllBookComment(id: number): Promise<BookComments | undefined> {
-    const books = await this.BookCommentsModel.findById(id).select('-__v');
+  ): Promise<BookComments | null> {
+    const books = await this.BookComments.findByIdAndUpdate(id, data).select(
+      '-__v',
+    );
     return books;
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.BookComments.deleteOne({ _id: id });
   }
 }
